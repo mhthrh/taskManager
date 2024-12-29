@@ -28,9 +28,43 @@ func ValidatePassword(password string) error {
 	}
 	return nil
 }
-func ValidateUsername(username string) error {
+func ValidateUsername(userName string) error {
 
-	if username == "" {
+	if len(userName) > 25 {
+		return userNameIsTooLong
+	}
+	if len(userName) == 0 {
 		return userNameIsEmpty
 	}
+	return nil
+}
+func Mobile(number string) error {
+	if number == "" {
+		return mobileIsEmpty
+	}
+	if len(number) > 11 {
+		return mobileIsTooLong
+	}
+	if !regexp.MustCompile(mobileNumberRegex).MatchString(number) {
+		return mobileIsMismatch
+	}
+	return nil
+}
+func Firstname(name string) error {
+	if name == "" {
+		return firstNameIsEmpty
+	}
+	if len(name) > 25 {
+		return firstNameIsTooLong
+	}
+	return nil
+}
+func Lastname(name string) error {
+	if name == "" {
+		return lastNameIsEmpty
+	}
+	if len(name) > 25 {
+		return lastNameIsTooLong
+	}
+	return nil
 }

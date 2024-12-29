@@ -2,6 +2,7 @@ package model
 
 import (
 	"github.com/google/uuid"
+	"github.com/mhthrh/taskManager/pkg/common"
 	"time"
 )
 
@@ -19,8 +20,25 @@ type User struct {
 	Status    bool      `json:"status" gorm:"type:boolean"`
 }
 
-func NewUser(username string, password string, email string, mobile string, firstName string, lastName string) *User {
-
+func NewUser(username string, password string, email string, mobile string, firstName string, lastName string) (*User, error) {
+	if err := common.ValidateUsername(username); err != nil {
+		return nil, err
+	}
+	if err := common.ValidatePassword(password); err != nil {
+		return nil, err
+	}
+	if err := common.ValidateEmail(email); err != nil {
+		return nil, err
+	}
+	if err := common.Mobile(mobile); err != nil {
+		return nil, err
+	}
+	if err := common.Firstname(email); err != nil {
+		return nil, err
+	}
+	if err := common.Lastname(lastName); err != nil {
+		return nil, err
+	}
 	return &User{
 		ID:        uuid.New(),
 		Username:  username,
@@ -33,5 +51,5 @@ func NewUser(username string, password string, email string, mobile string, firs
 		updatedAt: time.Now(),
 		deletedAt: time.Time{},
 		Status:    true,
-	}
+	}, nil
 }
